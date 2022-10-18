@@ -1,11 +1,15 @@
 import React from "react";
 import ModalForm from "./ModalForm";
 import Tabla from "./Tabla";
+import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content'
 import "../stylesheets/Examen.css";
 
 function Examen() {
   const url = 'https://serviciosdigitalesplus.com/servicio/servicio.php?';
   const clave = '201846714';
+
+  const Alerta = withReactContent(Swal);
 
   const[inputs, setInputs] = React.useState({
     id: '',
@@ -29,7 +33,11 @@ function Examen() {
       });
   };
 
-  const limpiarInputs = () => setInputs({id: '', nom: '', app: '', tel: '',}); 
+  const success = (mensaje) => {
+    Alerta.fire(mensaje);
+    setInputs({id: '', nom: '', app: '', tel: '',});
+    getDatos();
+  }; 
 
   const getInputs = (e) => {
     const { target } = e;
@@ -47,21 +55,16 @@ function Examen() {
     const link = `${url}tipo=2&nom=${inputs.nom}&app=${inputs.app}&tel=${inputs.tel}&clave=${clave}`;
     fetch(link)
       .then(() => {
-        alert("CREAR OK");
-        limpiarInputs();
-        getDatos();
+        success(`Usuario "${inputs.nom}" agregado con exito`, '', 'success');
       });
   };
 
   const modificar = (e) => {
     e.preventDefault();
     const link = `${url}tipo=3&nom=${inputs.nom}&app=${inputs.app}&tel=${inputs.tel}&clave=${clave}&id=${inputs.id}`;
-    console.log(link);
     fetch(link)
       .then(() => {
-        alert("MODIFICAR OK");
-        limpiarInputs();
-        getDatos();
+        success(`Usuario con ID "${inputs.id}" modificado`, '', 'success');
       });
   };
 
@@ -70,9 +73,7 @@ function Examen() {
     const link = `${url}tipo=4&clave=${clave}&id=${inputs.id}`;
     fetch(link)
       .then(() => {
-        alert("ELIMINAR OK");
-        limpiarInputs();
-        getDatos();
+        success(`Usuario con ID "${inputs.id}" eliminado`, '', 'success');
       });
   };
 
@@ -97,13 +98,8 @@ function Examen() {
 
 export default Examen;
 
-//<button className="btn btn-primary" onClick={getDatos}>Chanchito feiz</button>
-
 
 /*PENDIENTES:
-  COMPLETAR CSS
-  SWEET ALERT
-  LIMPIAR INPUTS
-  DATOS CHIDOS
+  COMENTAR CODIGO
   VER METODO MODIFICAR SI SE PUEDEN FILTRAR DATOS
 */
