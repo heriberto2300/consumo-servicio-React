@@ -78,10 +78,15 @@ function Examen() {
 
   return(
     <>
-      <div className="botonera">
-        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Alta">Agregar Usuario</button>
-        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modificar">Modificar Usuario</button>
-        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Eliminar">Eliminar Usuario</button>
+      <div className="cabecera">
+        <div className="titulo">
+          <h3>Examen 1 Web Semantico</h3>
+        </div>
+        <div className="botonera">
+          <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Alta">Agregar Usuario</button>
+          <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modificar">Modificar Usuario</button>
+          <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Eliminar">Eliminar Usuario</button>
+        </div>
       </div> 
       
       <div className="tabla-contenedor">
