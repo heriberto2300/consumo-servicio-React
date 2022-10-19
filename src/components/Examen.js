@@ -34,28 +34,17 @@ function Examen() {
   };
 
   const success = (mensaje) => {
-    Alerta.fire(mensaje);
+    Alerta.fire(mensaje, '', 'success');
     setInputs({id: '', nom: '', app: '', tel: '',});
     getDatos();
   }; 
-
-  const getInputs = (e) => {
-    const { target } = e;
-    const { name, value } = target;
-    const aux = {
-      ...inputs,
-      [name]: value,
-    }
-    console.log(aux);
-    setInputs(aux);
-  };
 
   const crear = (e) => {
     e.preventDefault();
     const link = `${url}tipo=2&nom=${inputs.nom}&app=${inputs.app}&tel=${inputs.tel}&clave=${clave}`;
     fetch(link)
       .then(() => {
-        success(`Usuario "${inputs.nom}" agregado con exito`, '', 'success');
+        success(`Usuario "${inputs.nom}" agregado con exito`);
       });
   };
 
@@ -64,17 +53,27 @@ function Examen() {
     const link = `${url}tipo=3&nom=${inputs.nom}&app=${inputs.app}&tel=${inputs.tel}&clave=${clave}&id=${inputs.id}`;
     fetch(link)
       .then(() => {
-        success(`Usuario con ID "${inputs.id}" modificado`, '', 'success');
+        success(`Usuario con ID "${inputs.id}" modificado`);
       });
   };
 
   const eliminar = (e) => {
     e.preventDefault();
+    const usr = getUsuarioPorId(inputs.id);
+    if(!usr) {
+      Alerta.fire(`El Usuario con ID: ${inputs.id} no existe`, '', 'error');
+      return;
+    }
     const link = `${url}tipo=4&clave=${clave}&id=${inputs.id}`;
     fetch(link)
       .then(() => {
-        success(`Usuario con ID "${inputs.id}" eliminado`, '', 'success');
+        success(`Usuario "${usr.nom}" eliminado`);
       });
+  };
+
+  const getUsuarioPorId = (id) => {
+    const user = datos.find(usuario => usuario.id === id);
+    return user;
   };
 
   return(
@@ -89,17 +88,11 @@ function Examen() {
         <Tabla datos={datos}/>
       </div>
 
-      <ModalForm id="Alta" controlInputs={getInputs} accion={crear}/>
-      <ModalForm id="Modificar" controlInputs={getInputs} accion={modificar}/>
-      <ModalForm id="Eliminar" controlInputs={getInputs} accion={eliminar}/>
+      <ModalForm id="Alta" datosInputs={inputs} setDatosInputs={setInputs} accion={crear}/>
+      <ModalForm id="Modificar" datosInputs={inputs} setDatosInputs={setInputs} accion={modificar} getUsuario={getUsuarioPorId}/>
+      <ModalForm id="Eliminar" datosInputs={inputs} setDatosInputs={setInputs} accion={eliminar}/>
     </>
   );
 };
 
 export default Examen;
-
-
-/*PENDIENTES:
-  COMENTAR CODIGO
-  VER METODO MODIFICAR SI SE PUEDEN FILTRAR DATOS
-*/

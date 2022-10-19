@@ -1,25 +1,15 @@
 import React from "react";
+import Alta from "./Forms/Alta";
+import Eliminar from "./Forms/Eliminar";
+import Modificar from "./Forms/Modificar";
 
-function ModalForm({ id, controlInputs, accion }) {
+function ModalForm({ id, datosInputs, setDatosInputs, accion, getUsuario }) {
 
-  const submit = (e) => {
-    accion(e);
-    if(id === 'Alta') {
-      e.target[0].value = '';
-      e.target[1].value = '';
-      e.target[2].value = '';
-      return;
-    }
-    if(id === 'Eliminar') {
-      e.target[0].value = '';
-      return;
-    }
-
-    e.target[0].value = '';
-    e.target[1].value = '';
-    e.target[2].value = '';
-    e.target[3].value = '';
-  };
+  const forms = {
+    Alta: <Alta datosInputs={datosInputs} setDatosInputs={setDatosInputs} accion={accion}/>,
+    Modificar: <Modificar datosInputs={datosInputs} setDatosInputs={setDatosInputs} accion={accion} getUsuario={getUsuario}/>,
+    Eliminar: <Eliminar datosInputs={datosInputs} setDatosInputs={setDatosInputs} accion={accion}/>,
+  }
 
   return(
     <div className="modal fade" id={id} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby={`${id}Label`} aria-hidden="true">
@@ -30,31 +20,7 @@ function ModalForm({ id, controlInputs, accion }) {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form className="row g-3" onSubmit={submit}>
-              { id === 'Eliminar' || id === 'Modificar' ? 
-                <div className="col-md-12">
-                  <label htmlFor="id" className="form-label">ID</label>
-                  <input type="text" className="form-control" name="id" required onChange={controlInputs}/>
-                </div> : ''
-              }
-              { id !== 'Eliminar' ? 
-                <>
-                  <div className="col-md-6">
-                    <label htmlFor="nom" className="form-label">Nombre</label>
-                    <input type="text" className="form-control" name="nom" required onChange={controlInputs}/>
-                  </div>
-                  <div className="col-md-6">
-                    <label htmlFor="app" className="form-label">Apellido</label>
-                    <input type="text" className="form-control" name="app" required onChange={controlInputs}/>
-                  </div>
-                  <div className="col-md-12">
-                    <label htmlFor="tel" className="form-label">Telefono</label>
-                    <input type="tel" className="form-control" name="tel" required onChange={controlInputs}/>
-                  </div> 
-                </> : ''
-              }
-              <button type="submit" className="btn btn-primary">{id}</button>
-            </form>
+            {forms[id]}
           </div>
         </div>
       </div>
