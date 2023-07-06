@@ -7,7 +7,7 @@ import "../stylesheets/Examen.css";
 
 function Examen() {
   const url = 'https://serviciosdigitalesplus.com/servicio/servicio.php?';
-  const clave = '201846714';
+  const clave = '2018xxxxx';
 
   const Alerta = withReactContent(Swal);
 
